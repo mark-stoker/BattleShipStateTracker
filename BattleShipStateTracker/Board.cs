@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.GameStateTracker;
+using BattleShipStateTracker.Game;
 
 namespace BattleShipStateTracker
 {
@@ -12,13 +12,12 @@ namespace BattleShipStateTracker
 		private bool _firstSuccessfulAttack = true;
 
 		public Cell[,] BoardCells { get; set; }
-		public Game Game { get; set; }
+		public IGameState GameState { get; set; }
 		public IList<Ship> Ships { get; set; }
 
 		public Board()
 		{
-			Game = new Game();
-			
+			GameState = new GameState();
 			Ships = new List<Ship>();
 			CreateBoard();
 		}
@@ -79,15 +78,15 @@ namespace BattleShipStateTracker
 			{
 				result = BoardCells[xCoOrdinate - 1, yCoOrdinate - 1].State
 					.IncomingAttack(BoardCells[xCoOrdinate - 1, yCoOrdinate - 1], BoardCells);
-				
+
 				if (_firstSuccessfulAttack && result == CellStateName.Hit)
-					Game.State.ChangeState(Game);
+					GameState.GameStateName = GameStateName.PartialShipHits;
 
 				if (result == CellStateName.Hit)
 					_firstSuccessfulAttack = false;
 
 				if (result == CellStateName.Sunk)
-					Game.State.ChangeState(Game);
+					GameState.GameStateName = GameStateName.AllShipsSunk;
 
 				return BoardCells[xCoOrdinate - 1, yCoOrdinate - 1].State.ReportState();
 			}

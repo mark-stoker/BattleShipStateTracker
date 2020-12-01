@@ -8,6 +8,7 @@
 
 	public class Ship
 	{
+		//TODO these fields should be private
 		protected int _xAxis;
 		protected int _yAxis;
 		protected int _length;

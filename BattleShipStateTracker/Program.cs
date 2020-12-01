@@ -34,7 +34,7 @@ namespace BattleShipStateTracker
 						MainMenu();
 						break;
 					case "5":
-						Console.WriteLine($"You have quit the game");
+						Console.WriteLine($"You have quit the gameState");
 						quitNow = true;
 						break;
 				}
@@ -49,8 +49,8 @@ namespace BattleShipStateTracker
 			Console.WriteLine("\t1 - Create board");
 			Console.WriteLine("\t2 - Add Battleship to the Board");
 			Console.WriteLine("\t3 - Take an attack at a given position");
-			Console.WriteLine("\t4 - Find out status of game");
-			Console.WriteLine("\t5 - Quit game");
+			Console.WriteLine("\t4 - Find out status of gameState");
+			Console.WriteLine("\t5 - Quit gameState");
 			Console.WriteLine();
 			Console.WriteLine();
 		}
@@ -133,11 +133,11 @@ namespace BattleShipStateTracker
 		{
 			if (gameBoard == null)
 			{
-				Console.WriteLine($"To start the game, please create a board");
+				Console.WriteLine($"To start the gameState, please create a board");
 			}
 			else
 			{
-				Console.WriteLine(gameBoard.Game.ReportState());
+				Console.WriteLine(gameBoard.GameState.GameStateName);
 			}
 		}
 	}

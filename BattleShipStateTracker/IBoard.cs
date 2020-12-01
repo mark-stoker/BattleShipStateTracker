@@ -1,13 +1,13 @@
 ﻿using System.Collections.Generic;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.GameStateTracker;
+using BattleShipStateTracker.Game;
 
 namespace BattleShipStateTracker
 {
 	public interface IBoard
 	{
 		Cell[,] BoardCells { get; set; }
-		Game Game { get; set; }
+		IGameState GameState { get; set; }
 		IList<Ship> Ships { get; set; }
 
 		void CreateBoard();
