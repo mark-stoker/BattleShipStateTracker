@@ -34,10 +34,10 @@ namespace BattleShipTrackerTests
 			var gameState = gameBoard.GameState.GameStateName;
 
 			//Assert
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x, y].SpecificCellStatus(x, y, gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x, y += 1].SpecificCellStatus(x, y +=1 , gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x, 4].SpecificCellStatus(x, 4, gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x, 5].SpecificCellStatus(x, 5, gameBoard.BoardCells));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
 			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
 		}
 
@@ -55,10 +55,10 @@ namespace BattleShipTrackerTests
 			var gameState = gameBoard.GameState.GameStateName;
 
 			//Assert
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x, y].SpecificCellStatus(x, y, gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[x += 1, y].SpecificCellStatus(x += 1, y, gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[4, y].SpecificCellStatus(4, y, gameBoard.BoardCells));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.BoardCells[5, y].SpecificCellStatus(5, y, gameBoard.BoardCells));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
+			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
 			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
 		}
 

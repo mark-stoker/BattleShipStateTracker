@@ -10,10 +10,15 @@
 
 	public class Cell : ICell
 	{
+		private int _xCoordinate;
+		private int _yCoordinate;
+
 		public ICellState State { get; set; }
 
 		public Cell(int x, int y)
 		{
+			_xCoordinate = x;
+			_yCoordinate = y;
 			State = new WaterState();
 		}
 
@@ -25,11 +30,6 @@
 		public CellStateName ReportState()
 		{
 			return this.State.ReportState();
-		}
-
-		public CellStateName SpecificCellStatus(int horizontalCoOrdinate, int verticalCoOrdinate, ICell[,] boardCells)
-		{
-			return boardCells[horizontalCoOrdinate - 1, verticalCoOrdinate - 1].State.ReportState();
 		}
 	}
 }

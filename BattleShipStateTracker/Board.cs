@@ -23,13 +23,13 @@ namespace BattleShipStateTracker
 
 		public void CreateBoard()
 		{
-			BoardCells = new Cell[BoardWidth, BoardHeight];
+			BoardCells = new ICell[BoardWidth, BoardHeight];
 
 			for (var x = 0; x < BoardWidth; x++)
 			{
 				for (var y = 0; y < BoardWidth; y++)
 				{
-					BoardCells[x, y] = new Cell(x + 1, y + 1) { State = new WaterState() };
+					BoardCells[x, y] = new Cell(x + 1, y + 1);
 				}
 			}
 		}
@@ -92,6 +92,11 @@ namespace BattleShipStateTracker
 			}
 
 			return result;
+		}
+
+		public CellStateName FindCellStateOnBoard(int x, int y)
+		{
+			return BoardCells[x - 1, y - 1].State.ReportState();
 		}
 
 		private bool AllOccupiedBoardCellsHit()

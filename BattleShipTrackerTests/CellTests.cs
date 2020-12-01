@@ -5,13 +5,17 @@ namespace BattleShipTrackerTests
 {
 	public class CellTests
 	{
+		private int _xCoordinate;
+		private int _yCoordinate;
 		private Cell _cell;
 
 		[Test, Order(1)]
 		public void CellInCorrectState_InitialCreation_InWaterState()
 		{
 			//Arrange
-			_cell = new Cell(3, 3); //Constructor will put this into WaterState()
+			_xCoordinate = 3;
+			_yCoordinate = 3;
+			_cell = new Cell(_xCoordinate, _yCoordinate); //Constructor will put this into WaterState()
 			
 			//Act
 			var result = _cell.ReportState();

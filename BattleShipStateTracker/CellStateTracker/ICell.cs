@@ -7,7 +7,5 @@
 		void ChangeState();
 
 		CellStateName ReportState();
-
-		CellStateName SpecificCellStatus(int horizontalCoOrdinate, int verticalCoOrdinate, ICell[,] boardCells);
 	}
 }
