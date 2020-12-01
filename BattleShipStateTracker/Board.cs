@@ -10,26 +10,25 @@ namespace BattleShipStateTracker
 		private const int BoardWidth = 10;
 		private const int BoardHeight = 10;
 
-		public ICell[,] BoardCells { get; set; }
-		public IGameState GameState { get; set; }
-		public IList<Ship> Ships { get; set; }
+		private ICell[,] _boardCells;
+		private IGameState _gameState;
+		private IList<Ship> _ships;
 
 		public Board()
 		{
-			GameState = new GameState();
-			Ships = new List<Ship>();
+			_boardCells = new ICell[BoardWidth, BoardHeight];
+			_gameState = new GameState();
+			_ships = new List<Ship>();
 			CreateBoard();
 		}
 
 		public void CreateBoard()
 		{
-			BoardCells = new ICell[BoardWidth, BoardHeight];
-
 			for (var x = 0; x < BoardWidth; x++)
 			{
 				for (var y = 0; y < BoardWidth; y++)
 				{
-					BoardCells[x, y] = new Cell(x + 1, y + 1);
+					_boardCells[x, y] = new Cell(x + 1, y + 1);
 				}
 			}
 		}
@@ -39,7 +38,7 @@ namespace BattleShipStateTracker
 			try
 			{
 				var ship = new Ship(xStartCoOrdinate, yStartCoOrdinate, length, alignment);
-				Ships.Add(ship);
+				_ships.Add(ship);
 
 				int horizontalLength = xStartCoOrdinate; //Represents the min length
 				int verticalLength = yStartCoOrdinate; //represents the min length
@@ -55,7 +54,7 @@ namespace BattleShipStateTracker
 				{
 					for (int y = xStartCoOrdinate - 1; y < horizontalLength; y++)
 					{
-						BoardCells[x, y].State.ChangeState(BoardCells[x, y]);
+						_boardCells[x, y].State.ChangeState(_boardCells[x, y]);
 					}
 				}
 
@@ -69,18 +68,18 @@ namespace BattleShipStateTracker
 		public CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate)
 		{
 			CellStateName? result = null;
-			var cell = BoardCells[xCoOrdinate - 1, yCoOrdinate - 1];
+			var cell = _boardCells[xCoOrdinate - 1, yCoOrdinate - 1];
 
 			try
 			{
 				result = cell.State.IncomingAttack(cell);
 
 				if (BoardCellsPartiallyHit())
-					GameState.GameStateName = GameStateName.PartialShipHits;
+					_gameState.GameStateName = GameStateName.PartialShipHits;
 
 				if (AllOccupiedBoardCellsHit())
 				{
-					GameState.GameStateName = GameStateName.AllShipsSunk;
+					_gameState.GameStateName = GameStateName.AllShipsSunk;
 					cell.ChangeState();
 				}
 
@@ -96,16 +95,32 @@ namespace BattleShipStateTracker
 
 		public CellStateName FindCellStateOnBoard(int x, int y)
 		{
-			return BoardCells[x - 1, y - 1].State.ReportState();
+			return _boardCells[x - 1, y - 1].State.ReportState();
+		}
+
+		public GameStateName GetGameState()
+		{
+			return _gameState.GameStateName;
+		}
+
+		//Todo how do we get the exact ship here???
+		//public ShipStateName ShipStateName()
+		//{
+		//	return _ships[0].ShipStateName;
+		//}
+
+		public int NumberOfShipsOnBoard()
+		{
+			return _ships.Count;
 		}
 
 		private bool AllOccupiedBoardCellsHit()
 		{
-			for (int col = 0; col < BoardCells.GetLength(1); col++)
+			for (int col = 0; col < _boardCells.GetLength(1); col++)
 			{
-				for (int row = 0; row < BoardCells.GetLength(0); row++)
+				for (int row = 0; row < _boardCells.GetLength(0); row++)
 				{
-					if (BoardCells[row, col].State.ReportState().ToString() == CellStateName.Occupied.ToString())
+					if (_boardCells[row, col].State.ReportState().ToString() == CellStateName.Occupied.ToString())
 						return false;
 				}
 			}
@@ -115,11 +130,11 @@ namespace BattleShipStateTracker
 
 		private bool BoardCellsPartiallyHit()
 		{
-			for (int col = 0; col < BoardCells.GetLength(1); col++)
+			for (int col = 0; col < _boardCells.GetLength(1); col++)
 			{
-				for (int row = 0; row < BoardCells.GetLength(0); row++)
+				for (int row = 0; row < _boardCells.GetLength(0); row++)
 				{
-					if (BoardCells[row, col].State.ReportState().ToString() == CellStateName.Hit.ToString())
+					if (_boardCells[row, col].State.ReportState().ToString() == CellStateName.Hit.ToString())
 						return true;
 				}
 			}

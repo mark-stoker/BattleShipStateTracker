@@ -108,7 +108,7 @@ namespace BattleShipStateTracker
 			{
 				Console.WriteLine($"Please create a board and add a ship before attacking");
 			}
-			else if (!gameBoard.Ships.Any())
+			else if (gameBoard.NumberOfShipsOnBoard() == 0)
 			{
 				Console.WriteLine($"Please add a ship before attacking");
 			}
@@ -137,7 +137,7 @@ namespace BattleShipStateTracker
 			}
 			else
 			{
-				Console.WriteLine(gameBoard.GameState.GameStateName);
+				Console.WriteLine(gameBoard.GetGameState());
 			}
 		}
 	}

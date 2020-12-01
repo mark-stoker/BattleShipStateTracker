@@ -14,7 +14,7 @@ namespace BattleShipTrackerTests
 			IBoard gameBoard = new Board();
 
 			//Act
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
@@ -31,7 +31,7 @@ namespace BattleShipTrackerTests
 
 			//Act
 			gameBoard.AddShipToBoard(x, y, length, Alignment.Horizontal);
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
@@ -52,7 +52,7 @@ namespace BattleShipTrackerTests
 
 			//Act
 			gameBoard.AddShipToBoard(x, y, length, Alignment.Vertical);
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
@@ -108,7 +108,7 @@ namespace BattleShipTrackerTests
 			
 			////Act
 			var cellState = gameBoard.AttackCellOnBoard(9, 9);
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Water, cellState);
@@ -129,7 +129,7 @@ namespace BattleShipTrackerTests
 			//Act
 			gameBoard.AttackCellOnBoard(x, y);
 			var cellState = gameBoard.AttackCellOnBoard(x, y);
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Hit, cellState);
@@ -153,7 +153,7 @@ namespace BattleShipTrackerTests
 			gameBoard.AttackCellOnBoard(7, 6);
 
 			var cellState = gameBoard.AttackCellOnBoard(8, 6);
-			var gameState = gameBoard.GameState.GameStateName;
+			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Sunk, cellState);
