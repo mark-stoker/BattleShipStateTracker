@@ -2,7 +2,7 @@
 {
 	public interface ICellState
 	{
-		CellStateName IncomingAttack(ICell cell, ICell[,] boardCells);
+		CellStateName IncomingAttack(ICell cell);
 
 		void ChangeState(ICell cell);
 

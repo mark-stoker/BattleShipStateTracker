@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.Game;
+using BattleShipStateTracker.GameStatus;
 
 namespace BattleShipStateTracker
 {
@@ -9,7 +9,6 @@ namespace BattleShipStateTracker
 	{
 		private const int BoardWidth = 10;
 		private const int BoardHeight = 10;
-		private bool _firstSuccessfulAttack = true;
 
 		public ICell[,] BoardCells { get; set; }
 		public IGameState GameState { get; set; }
@@ -47,13 +46,10 @@ namespace BattleShipStateTracker
 
 				//Works out length based on alignment
 				if (alignment == Alignment.Horizontal)
-				{
 					horizontalLength = xStartCoOrdinate + length - 1;
-				}
-				else
-				{
+
+				if (alignment == Alignment.Vertical)
 					verticalLength = yStartCoOrdinate + length - 1;
-				}
 
 				for (int x = yStartCoOrdinate - 1; x < verticalLength; x++)
 				{
@@ -73,22 +69,22 @@ namespace BattleShipStateTracker
 		public CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate)
 		{
 			CellStateName? result = null;
+			var cell = BoardCells[xCoOrdinate - 1, yCoOrdinate - 1];
 
 			try
 			{
-				result = BoardCells[xCoOrdinate - 1, yCoOrdinate - 1].State
-					.IncomingAttack(BoardCells[xCoOrdinate - 1, yCoOrdinate - 1], BoardCells);
+				result = cell.State.IncomingAttack(cell);
 
-				if (_firstSuccessfulAttack && result == CellStateName.Hit)
+				if (BoardCellsPartiallyHit())
 					GameState.GameStateName = GameStateName.PartialShipHits;
 
-				if (result == CellStateName.Hit)
-					_firstSuccessfulAttack = false;
-
-				if (result == CellStateName.Sunk)
+				if (AllOccupiedBoardCellsHit())
+				{
 					GameState.GameStateName = GameStateName.AllShipsSunk;
+					cell.ChangeState();
+				}
 
-				return BoardCells[xCoOrdinate - 1, yCoOrdinate - 1].State.ReportState();
+				return cell.State.ReportState();
 			}
 			catch (System.IndexOutOfRangeException)
 			{
@@ -96,6 +92,34 @@ namespace BattleShipStateTracker
 			}
 
 			return result;
+		}
+
+		private bool AllOccupiedBoardCellsHit()
+		{
+			for (int col = 0; col < BoardCells.GetLength(1); col++)
+			{
+				for (int row = 0; row < BoardCells.GetLength(0); row++)
+				{
+					if (BoardCells[row, col].State.ReportState().ToString() == CellStateName.Occupied.ToString())
+						return false;
+				}
+			}
+
+			return true;
+		}
+
+		private bool BoardCellsPartiallyHit()
+		{
+			for (int col = 0; col < BoardCells.GetLength(1); col++)
+			{
+				for (int row = 0; row < BoardCells.GetLength(0); row++)
+				{
+					if (BoardCells[row, col].State.ReportState().ToString() == CellStateName.Hit.ToString())
+						return true;
+				}
+			}
+
+			return false;
 		}
 	}
 }

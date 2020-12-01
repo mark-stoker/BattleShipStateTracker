@@ -1,4 +1,4 @@
-﻿namespace BattleShipStateTracker.Game
+﻿namespace BattleShipStateTracker.GameStatus
 {
 	public interface IGameState
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.Game;
+using BattleShipStateTracker.GameStatus;
 
 namespace BattleShipStateTracker
 {

@@ -6,14 +6,12 @@
 		Horizontal = 1
 	};
 
-	public class Ship
+	public class Ship : IShip
 	{
-		//TODO these fields should be private
-		protected int _xAxis;
-		protected int _yAxis;
-		protected int _length;
-		protected Alignment _alignment;
-		
+		private int _xAxis;
+		private int _yAxis;
+		private int _length;
+		private Alignment _alignment;
 
 		public Ship(int x, int y, int length, Alignment alignment)
 		{

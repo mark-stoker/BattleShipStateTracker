@@ -2,7 +2,7 @@
 {
 	public class WaterState : ICellState
 	{
-		public CellStateName IncomingAttack(ICell cell, ICell[,] boardCells)
+		public CellStateName IncomingAttack(ICell cell)
 		{
 			return ReportState();
 		}

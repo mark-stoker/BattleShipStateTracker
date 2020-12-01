@@ -4,7 +4,7 @@ namespace BattleShipStateTracker.CellStateTracker
 {
 	public class SunkState : ICellState
 	{
-		public CellStateName IncomingAttack(ICell cell, ICell[,] boardCells)
+		public CellStateName IncomingAttack(ICell cell)
 		{
 			throw new NotImplementedException();
 		}

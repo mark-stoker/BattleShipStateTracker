@@ -1,6 +1,6 @@
 using BattleShipStateTracker;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.Game;
+using BattleShipStateTracker.GameStatus;
 using NUnit.Framework;
 
 namespace BattleShipTrackerTests
