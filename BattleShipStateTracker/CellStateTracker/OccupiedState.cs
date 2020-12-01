@@ -2,7 +2,7 @@
 {
 	public class OccupiedState : ICellState
 	{
-		public CellStateName IncomingAttack(Cell cell, Cell[,] boardCells)
+		public CellStateName IncomingAttack(ICell cell, ICell[,] boardCells)
 		{
 			cell.State = new HitState();
 
@@ -15,7 +15,7 @@
 		return CellStateName.Hit;
 		}
 
-		public void ChangeState(Cell cell)
+		public void ChangeState(ICell cell)
 		{
 			cell.State = new HitState();
 		}
@@ -25,7 +25,7 @@
 			return CellStateName.Occupied;
 		}
 
-		private bool AllOccupiedCellsHit(Cell[,] boardCells)
+		private bool AllOccupiedCellsHit(ICell[,] boardCells)
 		{
 			for (int col = 0; col < boardCells.GetLength(1); col++)
 			{

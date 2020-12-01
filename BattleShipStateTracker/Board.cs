@@ -11,7 +11,7 @@ namespace BattleShipStateTracker
 		private const int BoardHeight = 10;
 		private bool _firstSuccessfulAttack = true;
 
-		public Cell[,] BoardCells { get; set; }
+		public ICell[,] BoardCells { get; set; }
 		public IGameState GameState { get; set; }
 		public IList<Ship> Ships { get; set; }
 
@@ -26,9 +26,9 @@ namespace BattleShipStateTracker
 		{
 			BoardCells = new Cell[BoardWidth, BoardHeight];
 
-			for (int x = 0; x < BoardWidth; x++)
+			for (var x = 0; x < BoardWidth; x++)
 			{
-				for (int y = 0; y < BoardWidth; y++)
+				for (var y = 0; y < BoardWidth; y++)
 				{
 					BoardCells[x, y] = new Cell(x + 1, y + 1) { State = new WaterState() };
 				}

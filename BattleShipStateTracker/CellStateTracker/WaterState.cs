@@ -2,12 +2,12 @@
 {
 	public class WaterState : ICellState
 	{
-		public CellStateName IncomingAttack(Cell cell, Cell[,] boardCells)
+		public CellStateName IncomingAttack(ICell cell, ICell[,] boardCells)
 		{
 			return ReportState();
 		}
 
-		public void ChangeState(Cell cell)
+		public void ChangeState(ICell cell)
 		{
 			cell.State = new OccupiedState();
 		}	

@@ -8,7 +8,7 @@
 		Sunk = 4
 	}
 
-	public class Cell
+	public class Cell : ICell
 	{
 		public ICellState State { get; set; }
 
@@ -27,7 +27,7 @@
 			return this.State.ReportState();
 		}
 
-		public CellStateName SpecificCellStatus(int horizontalCoOrdinate, int verticalCoOrdinate, Cell[,] boardCells)
+		public CellStateName SpecificCellStatus(int horizontalCoOrdinate, int verticalCoOrdinate, ICell[,] boardCells)
 		{
 			return boardCells[horizontalCoOrdinate - 1, verticalCoOrdinate - 1].State.ReportState();
 		}

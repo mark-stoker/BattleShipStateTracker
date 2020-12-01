@@ -6,7 +6,7 @@ namespace BattleShipStateTracker
 {
 	public interface IBoard
 	{
-		Cell[,] BoardCells { get; set; }
+		ICell[,] BoardCells { get; set; }
 		IGameState GameState { get; set; }
 		IList<Ship> Ships { get; set; }
 
