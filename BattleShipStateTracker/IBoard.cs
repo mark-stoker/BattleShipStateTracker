@@ -1,5 +1,4 @@
-﻿using System.Collections.Generic;
-using BattleShipStateTracker.CellStateTracker;
+﻿using BattleShipStateTracker.CellStateTracker;
 using BattleShipStateTracker.GameStatus;
 
 namespace BattleShipStateTracker
@@ -8,7 +7,7 @@ namespace BattleShipStateTracker
 	{
 		void CreateBoard();
 
-		void AddShipToBoard(int xStartCoOrdinate, int yStartCoOrdinate, int length, Alignment alignment);
+		void AddShipToBoard(int xStartCoOrdinate, int yStartCoOrdinate, int length, ShipAlignment alignment);
 
 		CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate);
 

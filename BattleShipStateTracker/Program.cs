@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 
 namespace BattleShipStateTracker
 {
@@ -95,7 +94,7 @@ namespace BattleShipStateTracker
 				var alignment = Convert.ToString(Console.ReadLine());
 
 				gameBoard?.AddShipToBoard(xStartingPosition, yStartingPosition, length,
-					(Alignment)Enum.Parse(typeof(Alignment), alignment));
+					(ShipAlignment)Enum.Parse(typeof(ShipAlignment), alignment));
 
 				Console.WriteLine("Battleship added to Board");
 				Console.WriteLine();
@@ -138,6 +137,8 @@ namespace BattleShipStateTracker
 			else
 			{
 				Console.WriteLine(gameBoard.GetGameState());
+				Console.WriteLine("The number of ships on the board was " + gameBoard.NumberOfShipsOnBoard());
+				Console.WriteLine("The position of the ships were " + gameBoard.NumberOfShipsOnBoard());
 			}
 		}
 	}

@@ -10,8 +10,8 @@
 
 	public class Cell : ICell
 	{
-		private int _xCoordinate;
-		private int _yCoordinate;
+		private readonly int _xCoordinate;
+		private readonly int _yCoordinate;
 
 		public ICellState State { get; set; }
 
