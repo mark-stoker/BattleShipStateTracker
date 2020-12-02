@@ -1,25 +1,14 @@
 using BattleShipStateTracker;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.GameStatus;
+using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.Enums;
+using BattleShipStateTracker.Interfaces;
 using NUnit.Framework;
 
 namespace BattleShipTrackerTests
 {
 	public class BoardTests
 	{
-		[Test]
-		public void CreateBoard_BoardIsCreatedWithNoShipsHitState()
-		{
-			//Arrange
-			IBoard gameBoard = new Board();
-
-			//Act
-			var gameState = gameBoard.GetGameState();
-
-			//Assert
-			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
-		}
-
 		[Test]
 		public void AddShipToBoard_HorizontalAlignment_ShipOccupiesThoseCells()
 		{
@@ -30,15 +19,13 @@ namespace BattleShipTrackerTests
 			int length = 4;
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, BattleShipStateTracker.ShipAlignment.Horizontal);
-			var gameState = gameBoard.GetGameState();
+			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
 
 			//Assert
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
-			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
 		}
 
 		[Test]
@@ -51,15 +38,13 @@ namespace BattleShipTrackerTests
 			int length = 4;
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, BattleShipStateTracker.ShipAlignment.Vertical);
-			var gameState = gameBoard.GetGameState();
+			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
 
 			//Assert
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
 			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
-			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
 		}
 
 		//[Test]
@@ -104,15 +89,13 @@ namespace BattleShipTrackerTests
 			int x = 3;
 			int y = 3;
 			int length = 4;
-			gameBoard.AddShipToBoard(x, y, length, BattleShipStateTracker.ShipAlignment.Vertical);
+			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
 			
 			////Act
 			var cellState = gameBoard.AttackCellOnBoard(9, 9);
-			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Water, cellState);
-			Assert.AreEqual(GameStateName.NoShipsHit, gameState);
 		}
 
 		[Test]
@@ -124,16 +107,14 @@ namespace BattleShipTrackerTests
 			int x = 3;
 			int y = 3;
 			int length = 4;
-			gameBoard.AddShipToBoard(x, y, length, BattleShipStateTracker.ShipAlignment.Vertical);
+			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
 
 			//Act
 			gameBoard.AttackCellOnBoard(x, y);
 			var cellState = gameBoard.AttackCellOnBoard(x, y);
-			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Hit, cellState);
-			Assert.AreEqual(GameStateName.PartialShipHits, gameState);
 		}
 
 		[Test]
@@ -147,17 +128,15 @@ namespace BattleShipTrackerTests
 			int length = 3;
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, BattleShipStateTracker.ShipAlignment.Vertical);
+			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
 
 			gameBoard.AttackCellOnBoard(6, 6);
 			gameBoard.AttackCellOnBoard(7, 6);
 
 			var cellState = gameBoard.AttackCellOnBoard(8, 6);
-			var gameState = gameBoard.GetGameState();
 
 			//Assert
 			Assert.AreEqual(CellStateName.Sunk, cellState);
-			Assert.AreEqual(GameStateName.AllShipsSunk, gameState);
 		}
 
 		//[Test]
@@ -178,11 +157,5 @@ namespace BattleShipTrackerTests
 		//	//Assert
 		//	Assert.AreEqual("You must attack a ship within the bounds of the 10 x 10 board", result.ToString());
 		//}
-	}
-
-	public enum ShipAlignment
-	{
-		Vertical = 0,
-		Horizontal = 1
 	}
 }

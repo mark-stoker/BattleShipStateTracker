@@ -1,4 +1,6 @@
-﻿namespace BattleShipStateTracker.CellStateTracker
+﻿using BattleShipStateTracker.CellStateTracker.Enums;
+
+namespace BattleShipStateTracker.CellStateTracker.Interfaces
 {
 	public interface ICell
 	{

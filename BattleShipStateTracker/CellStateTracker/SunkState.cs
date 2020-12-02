@@ -1,4 +1,6 @@
 ﻿using System;
+using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.CellStateTracker.Interfaces;
 
 namespace BattleShipStateTracker.CellStateTracker
 {

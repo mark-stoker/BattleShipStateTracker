@@ -1,4 +1,5 @@
 ﻿using System;
+using BattleShipStateTracker.Enums;
 
 namespace BattleShipStateTracker
 {
@@ -6,7 +7,7 @@ namespace BattleShipStateTracker
 	{
 		static void Main(string[] args)
 		{
-			Board gameBoard = null; 
+			Game game = new Game();
 			
 			MainMenu();
 
@@ -17,19 +18,19 @@ namespace BattleShipStateTracker
 				switch (Console.ReadLine())
 				{
 					case "1":
-						gameBoard = CreateGameBoard(gameBoard);
+						CreateGameBoard(game);
 						MainMenu();
 						break;
 					case "2":
-						AddShipToBoard(gameBoard);
+						AddShipToBoard(game);
 						MainMenu();
 						break;
 					case "3":
-						AttackCellOnBoard(gameBoard);
+						AttackCellOnBoard(game);
 						MainMenu();
 						break;
 					case "4":
-						GameStatus(gameBoard);
+						GameStatus(game);
 						MainMenu();
 						break;
 					case "5":
@@ -54,26 +55,30 @@ namespace BattleShipStateTracker
 			Console.WriteLine();
 		}
 
-		private static Board CreateGameBoard(Board gameBoard)
+		private static void CreateGameBoard(Game game)
 		{
-			if (gameBoard == null)
+			if (!game.BoardCreated())
 			{
-				gameBoard = new Board();
+				game.CreateBoard();
+				Console.WriteLine();
 				Console.WriteLine($"Battleships 10 x 10 board created");
+				Console.WriteLine();
 			}
 			else
 			{
+				Console.WriteLine();
 				Console.WriteLine($"Board is already created");
+				Console.WriteLine();
 			}
-
-			return gameBoard;
 		}
 
-		private static void AddShipToBoard(Board gameBoard)
+		private static void AddShipToBoard(Game game)
 		{
-			if (gameBoard == null)
+			if (!game.BoardCreated())
 			{
+				Console.WriteLine();
 				Console.WriteLine($"Please create a board before adding a ship");
+				Console.WriteLine();
 			}
 			else
 			{
@@ -93,21 +98,23 @@ namespace BattleShipStateTracker
 				Console.WriteLine("Please enter the orientation of the ship:");
 				var alignment = Convert.ToString(Console.ReadLine());
 
-				gameBoard?.AddShipToBoard(xStartingPosition, yStartingPosition, length,
+				game?.AddShipToBoard(xStartingPosition, yStartingPosition, length,
 					(ShipAlignment)Enum.Parse(typeof(ShipAlignment), alignment));
 
+				Console.WriteLine();
 				Console.WriteLine("Battleship added to Board");
+				Console.WriteLine("Covers the following cells on Board: ");
 				Console.WriteLine();
 			}
 		}
 
-		private static void AttackCellOnBoard(Board gameBoard)
+		private static void AttackCellOnBoard(Game game)
 		{
-			if (gameBoard == null)
+			if (!game.BoardCreated())
 			{
 				Console.WriteLine($"Please create a board and add a ship before attacking");
 			}
-			else if (gameBoard.NumberOfShipsOnBoard() == 0)
+			else if (game.NumberOfShipsOnBoard() == 0)
 			{
 				Console.WriteLine($"Please add a ship before attacking");
 			}
@@ -123,22 +130,26 @@ namespace BattleShipStateTracker
 				Console.WriteLine("Please enter the y coordinate of the ship:");
 				yAttackPosition = Convert.ToInt32(Console.ReadLine());
 
-				Console.WriteLine(gameBoard.AttackCellOnBoard(xAttackPosition, yAttackPosition));
+				Console.WriteLine(game.IncomingAttack(xAttackPosition, yAttackPosition));
 				Console.WriteLine();
 			}
 		}
 
-		private static void GameStatus(Board gameBoard)
+		private static void GameStatus(Game game)
 		{
-			if (gameBoard == null)
+			if (!game.BoardCreated())
 			{
-				Console.WriteLine($"To start the gameState, please create a board");
+				Console.WriteLine();
+				Console.WriteLine($"To start the game, please create a board");
+				Console.WriteLine();
 			}
 			else
 			{
-				Console.WriteLine(gameBoard.GetGameState());
-				Console.WriteLine("The number of ships on the board was " + gameBoard.NumberOfShipsOnBoard());
-				Console.WriteLine("The position of the ships were " + gameBoard.NumberOfShipsOnBoard());
+				Console.WriteLine();
+				Console.WriteLine(game.GameStateName);
+				Console.WriteLine("The number of ships on the board was " + game.NumberOfShipsOnBoard());
+				Console.WriteLine("The position of the ships were " + game.NumberOfShipsOnBoard());
+				Console.WriteLine();
 			}
 		}
 	}

@@ -1,4 +1,4 @@
-namespace BattleShipStateTracker
+namespace BattleShipStateTracker.Enums
 {
 	public enum ShipAlignment
 	{

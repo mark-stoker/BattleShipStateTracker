@@ -1,6 +1,9 @@
 ﻿using System;
 using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.GameStatus;
+using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.CellStateTracker.Interfaces;
+using BattleShipStateTracker.Enums;
+using BattleShipStateTracker.Interfaces;
 
 namespace BattleShipStateTracker
 {
@@ -10,13 +13,13 @@ namespace BattleShipStateTracker
 		private const int BoardHeight = 10;
 
 		private readonly ICell[,] _boardCells;
-		private readonly IGameState _gameState;
+		private readonly IGame _game;
 		private int _shipCount = 0;
 
 		public Board()
 		{
 			_boardCells = new ICell[BoardWidth, BoardHeight];
-			_gameState = new GameState();
+			_game = new Game();
 			CreateBoard();
 		}
 
@@ -31,8 +34,6 @@ namespace BattleShipStateTracker
 			}
 		}
 
-		//TODO validate if ship is off board
-		//TODO validate if ship overlaps another ship
 		public void AddShipToBoard(int xStartCoOrdinate, int yStartCoOrdinate, int length, ShipAlignment alignment)
 		{
 			try
@@ -59,11 +60,10 @@ namespace BattleShipStateTracker
 			}
 			catch (System.IndexOutOfRangeException)
 			{
-				Console.Write("You must add a ship within the bounds of the 10 x 10 board");
+				Console.WriteLine("You must add a ship within the bounds of the 10 x 10 board");
 			}
 		}
 
-		//TODO Validate if cell has been attacked already
 		public CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate)
 		{
 			xCoOrdinate -= 1;
@@ -76,36 +76,29 @@ namespace BattleShipStateTracker
 			{
 				result = cell.State.IncomingAttack(cell);
 
-				if (BoardCellsPartiallyHit())
-					_gameState.GameStateName = GameStateName.PartialShipHits;
+				//TODO updating game state here breaks single responsibility
+				//if (BoardCellsPartiallyHit())
+				//	_game.GameStateName = GameStateName.PartialShipHits;
 
 				if (AllOccupiedBoardCellsHit())
 				{
-					_gameState.GameStateName = GameStateName.AllShipsSunk;
+					//_game.GameStateName = GameStateName.AllShipsSunk;
 					cell.ChangeState();
-					//TODO change state of Ship
-					//I think this might happen automatically in the Ship class
 				}
 
 				return cell.State.ReportState();
 			}
 			catch (System.IndexOutOfRangeException)
 			{
-				Console.Write("You must attack a cell within the bounds of the 10 x 10 board");
+				Console.WriteLine("You must attack a cell within the bounds of the 10 x 10 board");
 			}
 
 			return result;
 		}
 
-		//Validate if coordinates are off the board
 		public CellStateName FindCellStateOnBoard(int x, int y)
 		{
 			return _boardCells[x - 1, y - 1].State.ReportState();
-		}
-
-		public GameStateName GetGameState()
-		{
-			return _gameState.GameStateName;
 		}
 
 		public int NumberOfShipsOnBoard()

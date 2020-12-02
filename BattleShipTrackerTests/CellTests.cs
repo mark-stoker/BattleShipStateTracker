@@ -1,4 +1,5 @@
 ﻿using BattleShipStateTracker.CellStateTracker;
+using BattleShipStateTracker.CellStateTracker.Enums;
 using NUnit.Framework;
 
 namespace BattleShipTrackerTests

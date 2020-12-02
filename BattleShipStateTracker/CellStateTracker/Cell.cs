@@ -1,13 +1,8 @@
-﻿namespace BattleShipStateTracker.CellStateTracker
-{
-	public enum CellStateName
-	{
-		Water = 1,
-		Occupied = 2,
-		Hit = 3,
-		Sunk = 4
-	}
+﻿using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.CellStateTracker.Interfaces;
 
+namespace BattleShipStateTracker.CellStateTracker
+{
 	public class Cell : ICell
 	{
 		private readonly int _xCoordinate;

@@ -1,4 +1,7 @@
-﻿namespace BattleShipStateTracker.CellStateTracker
+﻿using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.CellStateTracker.Interfaces;
+
+namespace BattleShipStateTracker.CellStateTracker
 {
 	public class WaterState : ICellState
 	{

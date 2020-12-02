@@ -1,7 +1,8 @@
 ﻿using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.GameStatus;
+using BattleShipStateTracker.CellStateTracker.Enums;
+using BattleShipStateTracker.Enums;
 
-namespace BattleShipStateTracker
+namespace BattleShipStateTracker.Interfaces
 {
 	public interface IBoard
 	{
@@ -12,8 +13,6 @@ namespace BattleShipStateTracker
 		CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate);
 
 		CellStateName FindCellStateOnBoard(int x, int y);
-
-		GameStateName GetGameState();
 
 		int NumberOfShipsOnBoard();
 	}
