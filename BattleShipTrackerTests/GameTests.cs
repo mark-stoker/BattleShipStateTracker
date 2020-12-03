@@ -12,15 +12,8 @@ namespace BattleShipTrackerTests
 		public void GameCreatedInCorrectState_NoActionsTaken_GameIsInNoShipsHitState()
 		{
 			//Arrange
-			var game = new Game();
-			game.Board.CreateBoard();
-
-			int xStartCoordinate = 3;
-			int yStartCoordinate = 3;
-			int length = 3;
-			ShipAlignment alignment = ShipAlignment.Horizontal;
-
-			game.Board.AddShipToBoard(xStartCoordinate, yStartCoordinate, length, alignment);
+			var board = new Mock<IBoard>();
+			var game = new Game(board.Object);
 
 			//Act
 			var expectedResult = GameStateName.NoShipsHit;
@@ -64,6 +57,79 @@ namespace BattleShipTrackerTests
 
 			//Assert
 			Assert.AreEqual(expectedResult, result);
+		}
+
+		[Test]
+		public void AddShipToBoard_XCoordinateOutOfBounds_XCoordOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var game = new Game();
+
+			var x = 100; //Out of bounds
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => game.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void AddShipToBoard_YCoordinateOutOfBounds_YCoordOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var game = new Game();
+
+			var x = 3;
+			var y = 100; //Out of bounds
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => game.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void AddShipToBoard_LengthOutOfBounds_LengthOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var game = new Game();
+
+			var x = 3;
+			var y = 3;
+			var length = 100;  //Out of bounds
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => game.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void NumberOfShipsOnBoard_AddTwoShipsToBoard_TwoShipsReturned()
+		{
+			//Arrange
+			var game = new Game();
+			game.Board.CreateBoard();
+
+			var xFirst = 1;
+			var yFirst = 1;
+			var lengthFirst = 3;
+			var alignmentFirst = ShipAlignment.Vertical;
+
+			var xSecond = 6;
+			var ySecond = 6;
+			var lengthSecond = 3;
+			var alignmentSecond = ShipAlignment.Horizontal;
+
+			//Act
+			game.AddShipToBoard(xFirst, yFirst, lengthFirst, alignmentFirst);
+			game.AddShipToBoard(xSecond, ySecond, lengthSecond, alignmentSecond);
+
+			var expected = 2;
+			var result = game.Ships.Count;
+
+			//Assert
+			Assert.AreEqual(expected, result);
 		}
 	}
 }

@@ -8,8 +8,8 @@ namespace BattleShipStateTracker.Interfaces
 
 		IBoard Board { get; set; }
 
-		GameStateName GetGameState();
+		void AddShipToBoard(int xStartCoordinate, int yStartCoordinate, int length, ShipAlignment alignment);
 
-		string OutputGameState();
+		GameStateName GetGameState();
 	}
 }

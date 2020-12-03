@@ -7,18 +7,17 @@ namespace BattleShipStateTracker.Interfaces
 	{
 		void CreateBoard();
 
-		void AddShipToBoard(int xStartCoOrdinate, int yStartCoOrdinate, int length, ShipAlignment alignment);
+		void AddShipToBoard(IShip ship);
 
 		CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate);
 
 		CellStateName? FindCellStateOnBoard(int x, int y);
 
-		int NumberOfShipsOnBoard();
+		//int NumberOfShipsOnBoard();
 
 		bool BoardCreated();
 
 		bool AllOccupiedBoardCellsHit();
 
-		bool BoardCellsPartiallyHit();
-	}
+		bool BoardCellsPartiallyHit();}
 }

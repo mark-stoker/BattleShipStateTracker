@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using BattleShipStateTracker.Enums;
+using BattleShipStateTracker.Exceptions;
 using BattleShipStateTracker.Interfaces;
 
 namespace BattleShipStateTracker
@@ -7,8 +9,8 @@ namespace BattleShipStateTracker
 	public class Game : IGame
 	{
 		public GameStateName GameStateName { get; set; }
-
 		public IBoard Board { get; set; }
+		public IList<IShip> Ships { get; set; }
 
 		public Game()
 		{
@@ -22,6 +24,33 @@ namespace BattleShipStateTracker
 			Board = board;
 		}
 
+		public void AddShipToBoard(int xStartCoordinate, int yStartCoordinate, int length, ShipAlignment alignment)
+		{
+			try
+			{
+				xStartCoordinate.ValidateXStartCoordinate();
+				yStartCoordinate.ValidateYStartCoordinate();
+				length.ValidateLength();
+
+				var ship = new Ship(xStartCoordinate, yStartCoordinate, length, alignment);
+				Ships.Add(ship);
+
+				Board.AddShipToBoard(ship);
+			}
+			catch (XCoordOutOfBoundsException exception)
+			{
+				Console.WriteLine(exception.Message);
+			}
+			catch (YCoordOutOfBoundsException exception)
+			{
+				Console.WriteLine(exception.Message);
+			}
+			catch (LengthOutOfBoundsException exception)
+			{
+				Console.WriteLine(exception.Message);
+			}
+		}
+
 		public GameStateName GetGameState()
 		{
 			if (Board.AllOccupiedBoardCellsHit())
@@ -33,35 +62,6 @@ namespace BattleShipStateTracker
 			return GameStateName;
 		}
 
-		public string OutputGameState()
-		{
-			string result = null;
-			GetGameState();
-
-			if (GameStateName == GameStateName.AllShipsSunk)
-			{
-				result = "The game state is: " + GameStateName + ". All your ships are sunk, game over.";
-				Console.WriteLine(result);
-			}
-
-			if (GameStateName == GameStateName.ShipsPartiallyHit)
-			{
-				result = "The game state is: " + GameStateName + ". Some damage has been received, keep playing.";
-				Console.WriteLine(result);
-			}
-
-			if (GameStateName == GameStateName.NoShipsHit)
-			{
-				result = "The game state is: " + GameStateName + ". No damage received, keep playing.";
-				Console.WriteLine(result);
-			}
-
-			return result;
-		}
-
-		public void test()
-		{
-
-		}
+		
 	}
 }
