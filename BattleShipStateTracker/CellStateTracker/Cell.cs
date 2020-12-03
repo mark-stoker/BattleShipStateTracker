@@ -1,4 +1,5 @@
-﻿using BattleShipStateTracker.CellStateTracker.Enums;
+﻿using System.ComponentModel.DataAnnotations;
+using BattleShipStateTracker.CellStateTracker.Enums;
 using BattleShipStateTracker.CellStateTracker.Interfaces;
 
 namespace BattleShipStateTracker.CellStateTracker

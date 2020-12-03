@@ -1,5 +1,4 @@
-﻿using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.CellStateTracker.Enums;
+﻿using BattleShipStateTracker.CellStateTracker.Enums;
 using BattleShipStateTracker.Enums;
 
 namespace BattleShipStateTracker.Interfaces
@@ -15,5 +14,11 @@ namespace BattleShipStateTracker.Interfaces
 		CellStateName FindCellStateOnBoard(int x, int y);
 
 		int NumberOfShipsOnBoard();
+
+		bool BoardCreated();
+
+		bool AllOccupiedBoardCellsHit();
+
+		bool BoardCellsPartiallyHit();
 	}
 }

@@ -1,5 +1,4 @@
 using BattleShipStateTracker;
-using BattleShipStateTracker.CellStateTracker;
 using BattleShipStateTracker.CellStateTracker.Enums;
 using BattleShipStateTracker.Enums;
 using BattleShipStateTracker.Interfaces;
@@ -10,10 +9,24 @@ namespace BattleShipTrackerTests
 	public class BoardTests
 	{
 		[Test]
+		public void CreateBoard_UpdatesPrivateField_boardIsNotNull()
+		{
+			//Arrange
+			var board = new Board();
+
+			//Act
+			board.CreateBoard();
+
+			//Assert
+			Assert.NotNull(board.BoardCreated());
+		}
+
+		[Test]
 		public void AddShipToBoard_HorizontalAlignment_ShipOccupiesThoseCells()
 		{
 			//Arrange
 			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
 			int x = 3;
 			int y = 3;
 			int length = 4;
@@ -33,6 +46,7 @@ namespace BattleShipTrackerTests
 		{
 			//Arrange
 			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
 			int x = 3;
 			int y = 3;
 			int length = 4;
@@ -52,6 +66,7 @@ namespace BattleShipTrackerTests
 		//{
 		//	//Arrange
 		//	IBoard gameBoard = new Board();
+		//	gameBoard.CreateBoard();
 		//	int x = 3;
 		//	int y = 3;
 		//	int length = 4;
@@ -61,30 +76,29 @@ namespace BattleShipTrackerTests
 		//	gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
 
 		//	//Assert
-		//	
+
 		//}
 
-		//[Test]
-		//public void AddShipToBoard_WithCoordinatesOutOfBounds_OutOfBoundsExceptionIsCaught()
-		//{
-		//	//Arrange
-		//	IBoard gameBoard = new Board();
-		//	int x = 15;
-		//	int y = 15;
-		//	int length = 4;
+		[Test]
+		public void AddShipToBoard_WithCoordinatesOutOfBounds_OutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
+			int x = 15;
+			int y = 15;
+			int length = 4;
 
-		//	//Act
-		//	gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
-
-		//	//Assert
-		//	Assert.Catch<System.IndexOutOfRangeException>(() => gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal));
-		//}
+			//Act and Assert
+			Assert.Catch<System.IndexOutOfRangeException>(() => gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal));
+		}
 
 		[Test]
 		public void AttackCellOnBoard_CellStateIsWater_AttackMisses()
 		{
 			//Arrange
 			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
 
 			int x = 3;
 			int y = 3;
@@ -103,10 +117,12 @@ namespace BattleShipTrackerTests
 		{
 			//Arrange
 			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
 
 			int x = 3;
 			int y = 3;
 			int length = 4;
+
 			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
 
 			//Act
@@ -122,6 +138,7 @@ namespace BattleShipTrackerTests
 		{
 			//Arrange
 			IBoard gameBoard = new Board();
+			gameBoard.CreateBoard();
 
 			int x = 6;
 			int y = 6;
@@ -157,5 +174,7 @@ namespace BattleShipTrackerTests
 		//	//Assert
 		//	Assert.AreEqual("You must attack a ship within the bounds of the 10 x 10 board", result.ToString());
 		//}
+
+		//Test the number of ships on board
 	}
 }

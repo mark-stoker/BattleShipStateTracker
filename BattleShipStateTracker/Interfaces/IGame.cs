@@ -1,6 +1,4 @@
-﻿using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.CellStateTracker.Enums;
-using BattleShipStateTracker.Enums;
+﻿using BattleShipStateTracker.Enums;
 
 namespace BattleShipStateTracker.Interfaces
 {
@@ -8,14 +6,18 @@ namespace BattleShipStateTracker.Interfaces
 	{
 		GameStateName GameStateName { get; set; }
 
-		void CreateBoard();
+		IBoard Board { get; set; }
 
-		void AddShipToBoard(int xStartCoordinate, int yStartCoordinate, int length, ShipAlignment alignment);
+		GameStateName GetGameState();
 
-		CellStateName? IncomingAttack(int xCoordinate, int yCoordinate);
+		//void CreateBoard();
 
-		int NumberOfShipsOnBoard();
+		//void AddShipToBoard(int xStartCoordinate, int yStartCoordinate, int length, ShipAlignment alignment);
 
-		bool BoardCreated();
+		//CellStateName? IncomingAttack(int xCoordinate, int yCoordinate);
+
+		//int NumberOfShipsOnBoard();
+
+		//bool BoardCreated();
 	}
 }
