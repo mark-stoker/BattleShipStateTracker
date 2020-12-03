@@ -11,7 +11,7 @@ namespace BattleShipStateTracker.Interfaces
 
 		CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate);
 
-		CellStateName FindCellStateOnBoard(int x, int y);
+		CellStateName? FindCellStateOnBoard(int x, int y);
 
 		int NumberOfShipsOnBoard();
 

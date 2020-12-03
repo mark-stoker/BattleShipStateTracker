@@ -1,7 +1,6 @@
 using BattleShipStateTracker;
 using BattleShipStateTracker.CellStateTracker.Enums;
 using BattleShipStateTracker.Enums;
-using BattleShipStateTracker.Interfaces;
 using NUnit.Framework;
 
 namespace BattleShipTrackerTests
@@ -25,156 +24,277 @@ namespace BattleShipTrackerTests
 		public void AddShipToBoard_HorizontalAlignment_ShipOccupiesThoseCells()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
-			int x = 3;
-			int y = 3;
-			int length = 4;
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
+			board.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
+
+			var expected = CellStateName.Occupied;
 
 			//Assert
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y += 1));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x, y));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x, y += 1));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x, y += 1));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x, y += 1));
 		}
 
 		[Test]
 		public void AddShipToBoard_VerticalAlignment_ShipOccupiesThoseCells()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
-			int x = 3;
-			int y = 3;
-			int length = 4;
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Vertical;
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
+			board.AddShipToBoard(x, y, length, alignment);
+
+			var expected = CellStateName.Occupied;
 
 			//Assert
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x, y));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
-			Assert.AreEqual(CellStateName.Occupied, gameBoard.FindCellStateOnBoard(x += 1, y));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x, y));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x += 1, y));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x += 1, y));
+			Assert.AreEqual(expected, board.FindCellStateOnBoard(x += 1, y));
 		}
 
-		//[Test]
-		//public void AddShipToBoard_WhereAShipAlreadyExists_ErrorThatShipAlreadyInThatPosition()
-		//{
-		//	//Arrange
-		//	IBoard gameBoard = new Board();
-		//	gameBoard.CreateBoard();
-		//	int x = 3;
-		//	int y = 3;
-		//	int length = 4;
-
-		//	//Act
-		//	gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
-		//	gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal);
-
-		//	//Assert
-
-		//}
-
 		[Test]
-		public void AddShipToBoard_WithCoordinatesOutOfBounds_OutOfBoundsExceptionIsCaught()
+		public void AddShipToBoard_WhereAShipAlreadyExists_ShipsOverlapExceptionIsCaught()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
-			int x = 15;
-			int y = 15;
-			int length = 4;
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
+
+			board.AddShipToBoard(x, y, length, alignment);
 
 			//Act and Assert
-			Assert.Catch<System.IndexOutOfRangeException>(() => gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Horizontal));
+			Assert.DoesNotThrow(() => board.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void AddShipToBoard_XCoordinateOutOfBounds_XCoordOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 100; //Out of bounds
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => board.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void AddShipToBoard_YCoordinateOutOfBounds_YCoordOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 3;
+			var y = 100; //Out of bounds
+			var length = 4;
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => board.AddShipToBoard(x, y, length, alignment));
+		}
+
+		[Test]
+		public void AddShipToBoard_LengthOutOfBounds_LengthOutOfBoundsExceptionIsCaught()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 3;
+			var y = 3;
+			var length = 100;  //Out of bounds
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => board.AddShipToBoard(x, y, length, alignment));
 		}
 
 		[Test]
 		public void AttackCellOnBoard_CellStateIsWater_AttackMisses()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
+			var board = new Board();
+			board.CreateBoard();
 
-			int x = 3;
-			int y = 3;
-			int length = 4;
-			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Vertical;
+
+			board.AddShipToBoard(x, y, length, alignment);
 			
 			////Act
-			var cellState = gameBoard.AttackCellOnBoard(9, 9);
+			var expected = CellStateName.Water;
+			var result = board.AttackCellOnBoard(9, 9);
 
 			//Assert
-			Assert.AreEqual(CellStateName.Water, cellState);
+			Assert.AreEqual(expected, result);
 		}
 
 		[Test]
-		public void AttackCellOnBoard_CellStateIsHit_AttackConfirmsThisCellHitAlready()
+		public void AttackVerticalShipOnBoard_CellStateIsOccupied_AttackConfirmsThisCellHit()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
+			var board = new Board();
+			board.CreateBoard();
 
-			int x = 3;
-			int y = 3;
-			int length = 4;
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Vertical;
 
-			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
+			board.AddShipToBoard(x, y, length, alignment);
 
 			//Act
-			gameBoard.AttackCellOnBoard(x, y);
-			var cellState = gameBoard.AttackCellOnBoard(x, y);
+			var expected = CellStateName.Hit;
+			var result = board.AttackCellOnBoard(x += 1, y);
 
 			//Assert
-			Assert.AreEqual(CellStateName.Hit, cellState);
+			Assert.AreEqual(expected, result);
 		}
 
 		[Test]
-		public void AttackCellOnBoard_CellIsLastCellOfShip_ShipConfirmedAsSunk()
+		public void AttackHorizontalShipOnBoard_CellStateIsOccupied_AttackConfirmsThisCellHit()
 		{
 			//Arrange
-			IBoard gameBoard = new Board();
-			gameBoard.CreateBoard();
+			var board = new Board();
+			board.CreateBoard();
 
-			int x = 6;
-			int y = 6;
-			int length = 3;
+			var x = 3;
+			var y = 3;
+			var length = 4;
+			var alignment = ShipAlignment.Vertical;
+
+			board.AddShipToBoard(x, y, length, alignment);
 
 			//Act
-			gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
-
-			gameBoard.AttackCellOnBoard(6, 6);
-			gameBoard.AttackCellOnBoard(7, 6);
-
-			var cellState = gameBoard.AttackCellOnBoard(8, 6);
+			var expected = CellStateName.Hit;
+			var result = board.AttackCellOnBoard(x += 1, y);
 
 			//Assert
-			Assert.AreEqual(CellStateName.Sunk, cellState);
+			Assert.AreEqual(expected, result);
 		}
 
-		//[Test]
-		//public void AttackCellOffBoard_CellIsOutOfBounds_OutOfBoundsExceptionIsThrown()
-		//{
-		//	//Arrange
-		//	IBoard gameBoard = new Board();
+		[Test]
+		public void AttackCellOnBoard_CellIsLastCellOfVerticalShip_ShipConfirmedAsSunk()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
 
-		//	int x = 7;
-		//	int y = 7;
-		//	int length = 4;
+			var x = 6;
+			var y = 6;
+			var length = 3;
+			var alignment = ShipAlignment.Vertical;
 
-		//	gameBoard.AddShipToBoard(x, y, length, ShipAlignment.Vertical);
+			//Act
+			board.AddShipToBoard(x, y, length, alignment);
 
-		//	//Act
-		//	var result = gameBoard.AttackCellOnBoard(12, 12);
+			board.AttackCellOnBoard(x, y);
+			board.AttackCellOnBoard(x += 1, y);
 
-		//	//Assert
-		//	Assert.AreEqual("You must attack a ship within the bounds of the 10 x 10 board", result.ToString());
-		//}
+			var expected = CellStateName.Sunk;
+			var result = board.AttackCellOnBoard(x += 1, y);
 
-		//Test the number of ships on board
+			//Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[Test]
+		public void AttackCellOnBoard_CellIsLastCellOfHorizontalShip_ShipConfirmedAsSunk()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 6;
+			var y = 6;
+			var length = 3;
+			var alignment = ShipAlignment.Horizontal;
+
+			//Act
+			board.AddShipToBoard(x, y, length, alignment);
+
+			board.AttackCellOnBoard(x, y);
+			board.AttackCellOnBoard(x, y += 1);
+
+			var expected = CellStateName.Sunk;
+			var result = board.AttackCellOnBoard(x, y += 1);
+
+			//Assert
+			Assert.AreEqual(expected, result);
+		}
+
+		[Test]
+		public void ShipAlreadyHitInGivenPosition_ThatPositionIsHitAgain_CellHitAlreadyExceptionIsCaught()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var x = 9;
+			var y = 1;
+			var length = 5;
+			var alignment = ShipAlignment.Vertical;
+
+			board.AddShipToBoard(x, y, length, alignment);
+			board.AttackCellOnBoard(x, y); //attack one
+
+			//Act and Assert
+			Assert.DoesNotThrow(() => board.AttackCellOnBoard(x, y));
+		}
+
+		[Test]
+		public void NumberOfShipsOnBoard_AddTwoShipsToBoard_TwoShipsReturned()
+		{
+			//Arrange
+			var board = new Board();
+			board.CreateBoard();
+
+			var xFirst = 1;
+			var yFirst = 1;
+			var lengthFirst = 3;
+			var alignmentFirst = ShipAlignment.Vertical;
+
+			var xSecond = 6;
+			var ySecond = 6;
+			var lengthSecond = 3;
+			var alignmentSecond = ShipAlignment.Horizontal;
+
+			//Act
+			board.AddShipToBoard(xFirst, yFirst, lengthFirst, alignmentFirst);
+			board.AddShipToBoard(xSecond, ySecond, lengthSecond, alignmentSecond);
+
+			var expected = 2;
+			var result = board.NumberOfShipsOnBoard();
+
+			//Assert
+			Assert.AreEqual(expected, result);
+		}
 	}
 }

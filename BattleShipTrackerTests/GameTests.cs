@@ -1,7 +1,4 @@
-﻿using System.Security.Cryptography.X509Certificates;
-using BattleShipStateTracker;
-using BattleShipStateTracker.CellStateTracker;
-using BattleShipStateTracker.CellStateTracker.Enums;
+﻿using BattleShipStateTracker;
 using BattleShipStateTracker.Enums;
 using BattleShipStateTracker.Interfaces;
 using Moq;
@@ -9,7 +6,7 @@ using NUnit.Framework;
 
 namespace BattleShipTrackerTests
 {
-	public class GameStatusTests
+	public class GameTests
 	{
 		[Test]
 		public void GameCreatedInCorrectState_NoActionsTaken_GameIsInNoShipsHitState()

@@ -63,11 +63,14 @@ namespace BattleShipStateTracker
 				Console.WriteLine();
 				Console.WriteLine($"Battleships 10 x 10 board created");
 				Console.WriteLine();
+				Console.WriteLine();
 			}
+
 			else
 			{
 				Console.WriteLine();
 				Console.WriteLine($"Board is already created");
+				Console.WriteLine();
 				Console.WriteLine();
 			}
 		}
@@ -78,6 +81,7 @@ namespace BattleShipStateTracker
 			{
 				Console.WriteLine();
 				Console.WriteLine($"Please create a board before adding a ship");
+				Console.WriteLine();
 				Console.WriteLine();
 			}
 			else
@@ -97,13 +101,15 @@ namespace BattleShipStateTracker
 
 				Console.WriteLine("Please enter the orientation of the ship:");
 				var alignment = Convert.ToString(Console.ReadLine());
+				Console.WriteLine();
+				Console.WriteLine();
 
 				game?.Board.AddShipToBoard(xStartingPosition, yStartingPosition, length,
 					(ShipAlignment)Enum.Parse(typeof(ShipAlignment), alignment));
 
 				Console.WriteLine();
 				Console.WriteLine("Battleship added to Board");
-				Console.WriteLine("Covers the following cells on Board: ");
+				Console.WriteLine();
 				Console.WriteLine();
 			}
 		}
@@ -118,6 +124,8 @@ namespace BattleShipStateTracker
 			else if (game.Board.NumberOfShipsOnBoard() == 0)
 			{
 				Console.WriteLine($"Please add a ship before attacking");
+				Console.WriteLine();
+				Console.WriteLine();
 			}
 			else
 			{
@@ -133,6 +141,11 @@ namespace BattleShipStateTracker
 
 				Console.WriteLine(game.Board.AttackCellOnBoard(xAttackPosition, yAttackPosition));
 				Console.WriteLine();
+				Console.WriteLine();
+				Console.WriteLine(game.OutputGameState());
+				Console.WriteLine();
+				Console.WriteLine();
+				
 			}
 		}
 
@@ -141,15 +154,18 @@ namespace BattleShipStateTracker
 			if (!game.Board.BoardCreated())
 			{
 				Console.WriteLine();
+				Console.WriteLine();
 				Console.WriteLine($"To start the game, please create a board");
+				Console.WriteLine();
 				Console.WriteLine();
 			}
 			else
 			{
 				Console.WriteLine();
-				Console.WriteLine(game.GetGameState());
+				Console.WriteLine();
+				Console.WriteLine(game.OutputGameState());
 				Console.WriteLine("The number of ships on the board was " + game.Board.NumberOfShipsOnBoard());
-				Console.WriteLine("The position of the ships were " + game.Board.NumberOfShipsOnBoard());
+				Console.WriteLine();
 				Console.WriteLine();
 			}
 		}

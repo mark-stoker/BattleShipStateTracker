@@ -10,14 +10,6 @@ namespace BattleShipStateTracker.Interfaces
 
 		GameStateName GetGameState();
 
-		//void CreateBoard();
-
-		//void AddShipToBoard(int xStartCoordinate, int yStartCoordinate, int length, ShipAlignment alignment);
-
-		//CellStateName? IncomingAttack(int xCoordinate, int yCoordinate);
-
-		//int NumberOfShipsOnBoard();
-
-		//bool BoardCreated();
+		string OutputGameState();
 	}
 }

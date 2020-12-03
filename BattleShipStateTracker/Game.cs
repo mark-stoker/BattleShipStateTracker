@@ -1,4 +1,5 @@
-﻿using BattleShipStateTracker.Enums;
+﻿using System;
+using BattleShipStateTracker.Enums;
 using BattleShipStateTracker.Interfaces;
 
 namespace BattleShipStateTracker
@@ -30,6 +31,37 @@ namespace BattleShipStateTracker
 				GameStateName = GameStateName.ShipsPartiallyHit;
 
 			return GameStateName;
+		}
+
+		public string OutputGameState()
+		{
+			string result = null;
+			GetGameState();
+
+			if (GameStateName == GameStateName.AllShipsSunk)
+			{
+				result = "The game state is: " + GameStateName + ". All your ships are sunk, game over.";
+				Console.WriteLine(result);
+			}
+
+			if (GameStateName == GameStateName.ShipsPartiallyHit)
+			{
+				result = "The game state is: " + GameStateName + ". Some damage has been received, keep playing.";
+				Console.WriteLine(result);
+			}
+
+			if (GameStateName == GameStateName.NoShipsHit)
+			{
+				result = "The game state is: " + GameStateName + ". No damage received, keep playing.";
+				Console.WriteLine(result);
+			}
+
+			return result;
+		}
+
+		public void test()
+		{
+
 		}
 	}
 }

@@ -29,7 +29,7 @@ namespace BattleShipTrackerTests
 		public void CellInCorrectState_ChangeFromWaterState_InOccupiedState()
 		{
 			//Arrange
-			_cell.ChangeState();
+			_cell.State.ChangeState(_cell);
 
 			//Act
 			var result = _cell.ReportState();
@@ -42,7 +42,7 @@ namespace BattleShipTrackerTests
 		public void CellInCorrectState_ChangeFromOccupiedState_InHitState()
 		{
 			//Arrange
-			_cell.ChangeState();
+			_cell.State.ChangeState(_cell);
 
 			//Act
 			var result = _cell.ReportState();
@@ -55,8 +55,8 @@ namespace BattleShipTrackerTests
 		public void CellInCorrectState_ChangeFromHitState_InToSunkState()
 		{
 			//Arrange
-			_cell.ChangeState();
-			
+			_cell.State.ChangeState(_cell);
+
 			//Act
 			var result = _cell.ReportState();
 

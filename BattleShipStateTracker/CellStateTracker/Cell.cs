@@ -6,19 +6,18 @@ namespace BattleShipStateTracker.CellStateTracker
 {
 	public class Cell : ICell
 	{
-		private readonly int _xCoordinate;
-		private readonly int _yCoordinate;
-
+		public int XCoordinate { get; set; }
+		public int YCoordinate { get; set; }
 		public ICellState State { get; set; }
 
 		public Cell(int x, int y)
 		{
-			_xCoordinate = x;
-			_yCoordinate = y;
+			XCoordinate = x;
+			YCoordinate = y;
 			State = new WaterState();
 		}
 
-		public void ChangeState()
+		public void ChangeState(ICell cell)
 		{
 			this.State.ChangeState(this);
 		}
