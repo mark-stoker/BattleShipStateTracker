@@ -97,17 +97,21 @@ namespace BattleShipTrackerTests
 			//Arrange
 			var board = new Board();
 			board.CreateBoard();
-			
+
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(9);
+			attack.Setup(x => x.YCoordinate).Returns(9);
+
 			//Act
 			var expected = CellStateName.Water;
-			var result = board.AttackCellOnBoard(9, 9);
+			var result = board.AttackCellOnBoard(attack.Object);
 
 			//Assert
 			Assert.AreEqual(expected, result);
 		}
 
 		[Test]
-		public void AttackVerticalShipOnBoard_CellStateIsOccupied_AttackConfirmsThisCellHit()
+		public void AttackCellOnBoard_CellStateIsOccupiedByVerticalShip_AttackConfirmsThisCellHit()
 		{
 			//Arrange
 			var board = new Board();
@@ -121,16 +125,20 @@ namespace BattleShipTrackerTests
 
 			board.AddShipToBoard(ship.Object);
 
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(2);
+			attack.Setup(x => x.YCoordinate).Returns(1);
+
 			//Act
 			var expected = CellStateName.Hit;
-			var result = board.AttackCellOnBoard(ship.Object.XStartCoordinate += 1, ship.Object.YStartCoordinate);
+			var result = board.AttackCellOnBoard(attack.Object);
 
 			//Assert
 			Assert.AreEqual(expected, result);
 		}
 
 		[Test]
-		public void AttackHorizontalShipOnBoard_CellStateIsOccupied_AttackConfirmsThisCellHit()
+		public void AttackCellOnBoard_CellStateIsOccupiedByHorizontalShip_AttackConfirmsThisCellHit()
 		{
 			//Arrange
 			var board = new Board();
@@ -144,9 +152,13 @@ namespace BattleShipTrackerTests
 
 			board.AddShipToBoard(ship.Object);
 
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(1);
+			attack.Setup(x => x.YCoordinate).Returns(3);
+
 			//Act
 			var expected = CellStateName.Hit;
-			var result = board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate += 1);
+			var result = board.AttackCellOnBoard(attack.Object);
 
 			//Assert
 			Assert.AreEqual(expected, result);
@@ -168,11 +180,23 @@ namespace BattleShipTrackerTests
 			//Act
 			board.AddShipToBoard(ship.Object);
 
-			var test = board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate);
-			var test2 = board.AttackCellOnBoard(7, ship.Object.YStartCoordinate);
+			var attack1 = new Mock<IAttack>();
+			attack1.Setup(x => x.XCoordinate).Returns(6);
+			attack1.Setup(x => x.YCoordinate).Returns(6);
+
+			var attack2 = new Mock<IAttack>();
+			attack2.Setup(x => x.XCoordinate).Returns(7);
+			attack2.Setup(x => x.YCoordinate).Returns(6);
+
+			var attack3 = new Mock<IAttack>();
+			attack3.Setup(x => x.XCoordinate).Returns(8);
+			attack3.Setup(x => x.YCoordinate).Returns(6);
+
+			board.AttackCellOnBoard(attack1.Object);
+			board.AttackCellOnBoard(attack2.Object);
 
 			var expected = CellStateName.Sunk;
-			var result = board.AttackCellOnBoard(8, ship.Object.YStartCoordinate);
+			var result = board.AttackCellOnBoard(attack3.Object);
 
 			//Assert
 			Assert.AreEqual(expected, result);
@@ -194,18 +218,30 @@ namespace BattleShipTrackerTests
 			//Act
 			board.AddShipToBoard(ship.Object);
 
-			board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate);
-			board.AttackCellOnBoard(ship.Object.XStartCoordinate, 7);
+			var attack1 = new Mock<IAttack>();
+			attack1.Setup(x => x.XCoordinate).Returns(6);
+			attack1.Setup(x => x.YCoordinate).Returns(6);
+
+			var attack2 = new Mock<IAttack>();
+			attack2.Setup(x => x.XCoordinate).Returns(6);
+			attack2.Setup(x => x.YCoordinate).Returns(7);
+
+			var attack3 = new Mock<IAttack>();
+			attack3.Setup(x => x.XCoordinate).Returns(6);
+			attack3.Setup(x => x.YCoordinate).Returns(8);
+
+			board.AttackCellOnBoard(attack1.Object);
+			board.AttackCellOnBoard(attack2.Object);
 
 			var expected = CellStateName.Sunk;
-			var result = board.AttackCellOnBoard(ship.Object.XStartCoordinate, 8);
+			var result = board.AttackCellOnBoard(attack3.Object);
 
 			//Assert
 			Assert.AreEqual(expected, result);
 		}
 
 		[Test]
-		public void ShipAlreadyHitInGivenPosition_ThatPositionIsHitAgain_CellHitAlreadyExceptionIsCaught()
+		public void AttackCellOnBoard_ShipAlreadyHitInGivenPosition_CellHitAlreadyExceptionIsCaught()
 		{
 			//Arrange
 			var board = new Board();
@@ -218,33 +254,42 @@ namespace BattleShipTrackerTests
 			ship.Setup(x => x.Alignment).Returns(ShipAlignment.Vertical);
 
 			board.AddShipToBoard(ship.Object);
-			board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate); //attack one
+
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(9); 
+			attack.Setup(x => x.YCoordinate).Returns(1);
+
+			board.AttackCellOnBoard(attack.Object); //attack one
 
 			//Act and Assert
-			Assert.DoesNotThrow(() => board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate));
+			Assert.DoesNotThrow(() => board.AttackCellOnBoard(attack.Object));
 		}
 
 		[Test]
-		public void AttackShip_AttackIsOutOfBound_XCoordOutOfBoundsExceptionIsCaught()
+		public void AttackCellOnBoard_AttackIsOutOfBound_XCoordOutOfBoundsExceptionIsCaught()
 		{
 			//Arrange
 			var board = new Board();
 			board.CreateBoard();
 
 			var ship = new Mock<IShip>();
-			ship.Setup(x => x.XStartCoordinate).Returns(100); //Out of bounds
+			ship.Setup(x => x.XStartCoordinate).Returns(1); //Out of bounds
 			ship.Setup(x => x.YStartCoordinate).Returns(1);
 			ship.Setup(x => x.Length).Returns(5);
 			ship.Setup(x => x.Alignment).Returns(ShipAlignment.Vertical);
 
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(100); //Out of bounds
+			attack.Setup(x => x.YCoordinate).Returns(1);
+
 			board.AddShipToBoard(ship.Object);
 
 			//Act and Assert
-			Assert.DoesNotThrow(() => board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate));
+			Assert.DoesNotThrow(() => board.AttackCellOnBoard(attack.Object));
 		}
 
 		[Test]
-		public void AttackShip_AttackIsOutOfBound_YCoordOutOfBoundsExceptionIsCaught()
+		public void AttackCellOnBoard_AttackIsOutOfBound_YCoordOutOfBoundsExceptionIsCaught()
 		{
 			//Arrange
 			var board = new Board();
@@ -252,14 +297,18 @@ namespace BattleShipTrackerTests
 
 			var ship = new Mock<IShip>();
 			ship.Setup(x => x.XStartCoordinate).Returns(1);
-			ship.Setup(x => x.YStartCoordinate).Returns(100); //Out of bounds
+			ship.Setup(x => x.YStartCoordinate).Returns(1);
 			ship.Setup(x => x.Length).Returns(5);
 			ship.Setup(x => x.Alignment).Returns(ShipAlignment.Vertical);
+
+			var attack = new Mock<IAttack>();
+			attack.Setup(x => x.XCoordinate).Returns(1);
+			attack.Setup(x => x.YCoordinate).Returns(100);  //Out of bounds
 
 			board.AddShipToBoard(ship.Object);
 
 			//Act and Assert
-			Assert.DoesNotThrow(() => board.AttackCellOnBoard(ship.Object.XStartCoordinate, ship.Object.YStartCoordinate));
+			Assert.DoesNotThrow(() => board.AttackCellOnBoard(attack.Object));
 		}
 	}
 }

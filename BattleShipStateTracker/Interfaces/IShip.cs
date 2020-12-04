@@ -1,12 +1,11 @@
 ﻿using System;
+using System.Collections.Generic;
 using BattleShipStateTracker.Enums;
 
 namespace BattleShipStateTracker.Interfaces
 {
 	public interface IShip
 	{
-		Guid Name { get; set; }
-
 		int XStartCoordinate { get; set; }
 
 		int YStartCoordinate { get; set; }
@@ -16,6 +15,8 @@ namespace BattleShipStateTracker.Interfaces
 		ShipAlignment Alignment { get; set; }
 
 		int Hits { get; set; }
+
+		IList<Tuple<int, int>> ShipRange { get; set; }
 
 		bool IsSunk();
 	}

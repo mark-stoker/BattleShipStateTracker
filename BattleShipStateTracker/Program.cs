@@ -120,13 +120,12 @@ namespace BattleShipStateTracker
 			{
 				Console.WriteLine($"Please create a board and add a ship before attacking");
 			}
-			//TODO should this method be on game board
-			//else if (game.Board.NumberOfShipsOnBoard() == 0)
-			//{
-			//	Console.WriteLine($"Please add a ship before attacking");
-			//	Console.WriteLine();
-			//	Console.WriteLine();
-			//}
+			else if (game.Ships.Count == 0)
+			{
+				Console.WriteLine($"Please add a ship before attacking");
+				Console.WriteLine();
+				Console.WriteLine();
+			}
 			else
 			{
 				Console.WriteLine($"Take an attack at a given position");
@@ -139,11 +138,11 @@ namespace BattleShipStateTracker
 				Console.WriteLine("Please enter the y coordinate of the ship:");
 				yAttackPosition = Convert.ToInt32(Console.ReadLine());
 
-				Console.WriteLine(game.Board.AttackCellOnBoard(xAttackPosition, yAttackPosition));
 				Console.WriteLine();
 				Console.WriteLine();
-				Console.WriteLine(OutputGameState(game));
+				Console.WriteLine(game.AttackCellOnBoard(xAttackPosition, yAttackPosition) + "!");
 				Console.WriteLine();
+				
 				Console.WriteLine();
 				
 			}
@@ -163,38 +162,26 @@ namespace BattleShipStateTracker
 			{
 				Console.WriteLine();
 				Console.WriteLine();
-				Console.WriteLine(OutputGameState(game));
-				Console.WriteLine("The number of ships on the board was "/* + game.Board.NumberOfShipsOnBoard()*/);
+				var test = game.GetGameState();
+
+				if (game.GameStateName == GameStateName.AllShipsSunk)
+				{
+					Console.WriteLine("The game state is: " + game.GetGameState() + ". All your ships are sunk, game over.");
+				}
+
+				if (game.GameStateName == GameStateName.ShipsPartiallyHit)
+				{
+					Console.WriteLine("The game state is: " + game.GetGameState() + ". Some damage has been received, keep playing.");
+				}
+
+				if (game.GameStateName == GameStateName.NoShipsHit)
+				{
+					Console.WriteLine("The game state is: " + game.GetGameState() + ". No damage received, keep playing.");
+				}
+				Console.WriteLine("The number of ships on the board was " + game.Ships.Count);
 				Console.WriteLine();
 				Console.WriteLine();
 			}
-		}
-
-		private static string OutputGameState(Game game)
-		{
-			string result = null;
-
-			game.GetGameState();
-
-			if (game.GameStateName == GameStateName.AllShipsSunk)
-			{
-				result = "The game state is: " + game.GameStateName + ". All your ships are sunk, game over.";
-				Console.WriteLine(result);
-			}
-
-			if (game.GameStateName == GameStateName.ShipsPartiallyHit)
-			{
-				result = "The game state is: " + game.GameStateName + ". Some damage has been received, keep playing.";
-				Console.WriteLine(result);
-			}
-
-			if (game.GameStateName == GameStateName.NoShipsHit)
-			{
-				result = "The game state is: " + game.GameStateName + ". No damage received, keep playing.";
-				Console.WriteLine(result);
-			}
-
-			return result;
 		}
 
 	}

@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using BattleShipStateTracker.CellStateTracker.Enums;
 using BattleShipStateTracker.Enums;
 using BattleShipStateTracker.Exceptions;
 using BattleShipStateTracker.Interfaces;
@@ -11,11 +13,13 @@ namespace BattleShipStateTracker
 		public GameStateName GameStateName { get; set; }
 		public IBoard Board { get; set; }
 		public IList<IShip> Ships { get; set; }
+		public IAttack Attack { get; set; }
 
 		public Game()
 		{
 			GameStateName = GameStateName.NoShipsHit;
 			Board = new Board();
+			Ships = new List<IShip>();
 		}
 
 		public Game(IBoard board)
@@ -51,6 +55,27 @@ namespace BattleShipStateTracker
 			}
 		}
 
+		public CellStateName? AttackCellOnBoard(int xCoordinate, int yCoordinate)
+		{
+			Attack = new Attack
+			{
+				XCoordinate = xCoordinate,
+				YCoordinate = yCoordinate
+			};
+
+			var result = Board.AttackCellOnBoard(Attack);
+
+			if (result == CellStateName.Hit)
+			{
+				var ship = Ships.FirstOrDefault(x => x.ShipRange.Contains(new Tuple<int, int>(xCoordinate, yCoordinate)));
+				if (ship != null) ship.Hits += 1;
+
+				Attack.SuccessfulAttack = true;
+			}
+
+			return result;
+		}
+
 		public GameStateName GetGameState()
 		{
 			if (Board.AllOccupiedBoardCellsHit())
@@ -61,7 +86,5 @@ namespace BattleShipStateTracker
 
 			return GameStateName;
 		}
-
-		
 	}
 }

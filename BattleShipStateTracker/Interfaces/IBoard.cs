@@ -1,5 +1,4 @@
 ﻿using BattleShipStateTracker.CellStateTracker.Enums;
-using BattleShipStateTracker.Enums;
 
 namespace BattleShipStateTracker.Interfaces
 {
@@ -9,11 +8,9 @@ namespace BattleShipStateTracker.Interfaces
 
 		void AddShipToBoard(IShip ship);
 
-		CellStateName? AttackCellOnBoard(int xCoOrdinate, int yCoOrdinate);
+		CellStateName? AttackCellOnBoard(IAttack attack);
 
 		CellStateName? FindCellStateOnBoard(int x, int y);
-
-		//int NumberOfShipsOnBoard();
 
 		bool BoardCreated();
 
